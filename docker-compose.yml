@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:4
+    container_name: mongo
+    restart: always
+    ports:
+      - '2020:27017'
+    volumes:
+      - 'mongo:/data/db'
+
+volumes:
+  mongo:
