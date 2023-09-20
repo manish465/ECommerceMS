@@ -24,8 +24,11 @@ public class UserService {
     public ResponseEntity<String> register(@Valid UserRegistrationDTO userRegistrationDTO){
         log.info("|| called register from  UserService using {}||", userRegistrationDTO.toString());
 
-        Optional<UserEntity> existingUser = userRepository
-                .findByUsernameAndEmail(userRegistrationDTO.getUsername(), userRegistrationDTO.getEmail());
+        Optional<UserEntity> existingUser = userRepository.findByUsername(userRegistrationDTO.getUsername());
+
+        if(existingUser.isPresent()) throw new ApplicationException("User already exist");
+
+        existingUser = userRepository.findByEmail(userRegistrationDTO.getEmail());
 
         if(existingUser.isPresent()) throw new ApplicationException("User already exist");
 
