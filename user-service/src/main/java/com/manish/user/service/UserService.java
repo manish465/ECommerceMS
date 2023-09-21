@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,5 +49,22 @@ public class UserService {
         }catch (Exception e){
             throw new ApplicationException(e.getMessage());
         }
+    }
+
+    public ResponseEntity<UserEntity> getUserByUserId(String userId){
+        log.info("|| called getUserByUserId from  UserService using {}||", userId);
+
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if(user.isEmpty()) throw new ApplicationException("User dose not exist");
+
+        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<UserEntity>> getAllUser(){
+        log.info("|| called getAllUser from  UserService using ||");
+
+        List<UserEntity> userList = userRepository.findAll();
+
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 }
