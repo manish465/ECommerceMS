@@ -61,7 +61,7 @@ public class UserService {
     }
 
     public ResponseEntity<List<UserEntity>> getAllUser(){
-        log.info("|| called getAllUser from  UserService using ||");
+        log.info("|| called getAllUser from  UserService ||");
 
         List<UserEntity> userList = userRepository.findAll();
 
