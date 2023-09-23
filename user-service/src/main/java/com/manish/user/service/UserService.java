@@ -22,7 +22,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public ResponseEntity<String> register(@Valid UserRegistrationDTO userRegistrationDTO){
+    public ResponseEntity<String> registerUser(@Valid UserRegistrationDTO userRegistrationDTO){
         log.info("|| called register from  UserService using {}||", userRegistrationDTO.toString());
 
         Optional<UserEntity> existingUser = userRepository.findByUsername(userRegistrationDTO.getUsername());
@@ -66,5 +66,44 @@ public class UserService {
         List<UserEntity> userList = userRepository.findAll();
 
         return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> updateUser(String userId, @Valid UserRegistrationDTO userRegistrationDTO){
+        log.info("|| called updateUser from  UserService using {}||", userRegistrationDTO.toString());
+
+        Optional<UserEntity> userExist = userRepository.findById(userId);
+
+        if(userExist.isEmpty()) throw new ApplicationException("User dose not exist");
+
+        try {
+            UserEntity user = UserEntity.builder()
+                    .userId(userId)
+                    .username(userRegistrationDTO.getUsername())
+                    .firstname(userRegistrationDTO.getFirstname())
+                    .lastname(userRegistrationDTO.getLastname())
+                    .email(userRegistrationDTO.getEmail())
+                    .password(userRegistrationDTO.getPassword())
+                    .roles(userRegistrationDTO.getRoles())
+                    .build();
+
+            userRepository.save(user);
+            return new ResponseEntity<>("User Updated Successfully", HttpStatus.OK);
+        }catch (Exception e){
+            throw new ApplicationException(e.getMessage());
+        }
+    }
+
+    public ResponseEntity<String> deleteUserByUserId(String userId) {
+        log.info("|| called deleteUserByUserId from  UserService using {}||", userId);
+
+        Optional<UserEntity> user = userRepository.findById(userId);
+        if(user.isEmpty()) throw new ApplicationException("User dose not exist");
+
+        try {
+            userRepository.deleteById(userId);
+            return new ResponseEntity<>("User Deleted Successfully", HttpStatus.OK);
+        }catch (Exception e){
+            throw new ApplicationException(e.getMessage());
+        }
     }
 }

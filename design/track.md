@@ -13,3 +13,7 @@
 1. added getAllUser endpoint in user service
 2. added getUserByUserId endpoint in user service
 3. added swagger in user service
+## 23 Sept 2023
+### work done
+1. added updateUser endpoint in user service
+2. added deleteUserByUserId endpoint in user service
