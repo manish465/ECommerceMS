@@ -18,3 +18,4 @@
 1. added updateUser endpoint in user service
 2. added deleteUserByUserId endpoint in user service
 3. added discovery-service to the project
+4. added auth-service to the project
