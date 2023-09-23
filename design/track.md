@@ -10,6 +10,7 @@
 ### work done
 1. fixed [20 Sept 2023 | issue | 1]
 ## 21 Sept 2023
+### work done
 1. added getAllUser endpoint in user service
 2. added getUserByUserId endpoint in user service
 3. added swagger in user service
