@@ -21,3 +21,4 @@
 4. added auth-service to the project
 5. added zipkin monitoring to the project
 6. added product service
+7. added deleteAll endpoint in user service

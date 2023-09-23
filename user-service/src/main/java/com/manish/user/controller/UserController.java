@@ -48,4 +48,10 @@ public class UserController {
         log.info("|| called deleteUserByUserId from  UserController using {}||", userId);
         return userService.deleteUserByUserId(userId);
     }
+
+    @DeleteMapping("/add")
+    public ResponseEntity<String> deleteAll(){
+        log.info("|| called deleteAll from  UserController ||");
+        return userService.deleteAll();
+    }
 }

@@ -106,4 +106,15 @@ public class UserService {
             throw new ApplicationException(e.getMessage());
         }
     }
+
+    public ResponseEntity<String> deleteAll(){
+        log.info("|| called deleteAll from  UserService ||");
+
+        try {
+            userRepository.deleteAll();
+            return new ResponseEntity<>("Users Deleted Successfully", HttpStatus.OK);
+        }catch (Exception e){
+            throw new ApplicationException(e.getMessage());
+        }
+    }
 }
