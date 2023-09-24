@@ -23,10 +23,10 @@
 5. added zipkin monitoring to the project
 6. added product service
 7. added deleteAll endpoint in user service
-## 23 Sept 2023
+## 24 Sept 2023
 ### work done
 1. added cart-service to the project
 2. run createCart when registerUser runs
 3. run deleteCartByCartId when deleteUserByUserId runs
 4. run deleteAll cart when deleteAll user runs
-5. added price calculation
+5. added price calculation to cart service
