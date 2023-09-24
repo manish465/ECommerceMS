@@ -33,9 +33,9 @@ public class ProductService {
                     .vendorId(addProductDTO.getVendorId())
                     .build();
 
-            productRepository.save(product);
+            ProductEntity savedProduct = productRepository.save(product);
 
-            return new ResponseEntity<>("Product Added", HttpStatus.CREATED);
+            return new ResponseEntity<>(savedProduct.getProductId(), HttpStatus.CREATED);
         }catch (Exception e){
             throw new ApplicationException(e.getMessage());
         }

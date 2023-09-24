@@ -45,8 +45,8 @@ public class CartService {
                     .totalPrice(0)
                     .build();
 
-            cartRepository.save(cart);
-            return new ResponseEntity<>("Cart Created", HttpStatus.CREATED);
+            CartEntity savedCart = cartRepository.save(cart);
+            return new ResponseEntity<>(savedCart.getCartId(), HttpStatus.CREATED);
         }catch (Exception e){
             throw new ApplicationException(e.getMessage());
         }

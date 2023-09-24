@@ -43,9 +43,9 @@ public class UserService {
                     .roles(userRegistrationDTO.getRoles())
                     .build();
 
-            userRepository.save(user);
+            UserEntity savedUser = userRepository.save(user);
 
-            return new ResponseEntity<>("User Registered Successfully", HttpStatus.CREATED);
+            return new ResponseEntity<>(savedUser.getUserId(), HttpStatus.CREATED);
         }catch (Exception e){
             throw new ApplicationException(e.getMessage());
         }
