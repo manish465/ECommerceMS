@@ -3,6 +3,7 @@ package com.manish.user.service;
 import com.manish.user.dto.UserRegistrationDTO;
 import com.manish.user.entity.UserEntity;
 import com.manish.user.exception.ApplicationException;
+import com.manish.user.proxy.CartProxy;
 import com.manish.user.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -21,20 +23,19 @@ import java.util.Optional;
 @Validated
 public class UserService {
     private final UserRepository userRepository;
+    private final CartProxy cartProxy;
 
     public ResponseEntity<String> registerUser(@Valid UserRegistrationDTO userRegistrationDTO){
         log.info("|| called register from  UserService using {}||", userRegistrationDTO.toString());
 
         Optional<UserEntity> existingUser = userRepository.findByUsername(userRegistrationDTO.getUsername());
-
         if(existingUser.isPresent()) throw new ApplicationException("User already exist");
-
         existingUser = userRepository.findByEmail(userRegistrationDTO.getEmail());
-
         if(existingUser.isPresent()) throw new ApplicationException("User already exist");
 
         try {
             UserEntity user = UserEntity.builder()
+                    .userId(UUID.randomUUID().toString())
                     .username(userRegistrationDTO.getUsername())
                     .firstname(userRegistrationDTO.getFirstname())
                     .lastname(userRegistrationDTO.getLastname())
@@ -43,9 +44,11 @@ public class UserService {
                     .roles(userRegistrationDTO.getRoles())
                     .build();
 
-            UserEntity savedUser = userRepository.save(user);
 
-            return new ResponseEntity<>(savedUser.getUserId(), HttpStatus.CREATED);
+            ResponseEntity<String> cartId = cartProxy.createCart(user.getUserId());
+            user.setCartId(cartId.getBody());
+
+            return new ResponseEntity<>(userRepository.save(user).getUserId(), HttpStatus.CREATED);
         }catch (Exception e){
             throw new ApplicationException(e.getMessage());
         }
@@ -100,6 +103,7 @@ public class UserService {
         if(user.isEmpty()) throw new ApplicationException("User dose not exist");
 
         try {
+            cartProxy.deleteCartByCartId(user.get().getCartId());
             userRepository.deleteById(userId);
             return new ResponseEntity<>("User Deleted Successfully", HttpStatus.OK);
         }catch (Exception e){
@@ -111,6 +115,7 @@ public class UserService {
         log.info("|| called deleteAll from  UserService ||");
 
         try {
+            cartProxy.deleteAll();
             userRepository.deleteAll();
             return new ResponseEntity<>("Users Deleted Successfully", HttpStatus.OK);
         }catch (Exception e){

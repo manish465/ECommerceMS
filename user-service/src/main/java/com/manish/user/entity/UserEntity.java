@@ -21,4 +21,5 @@ public class UserEntity {
     private String email;
     private String password;
     private String roles;
+    private String cartId;
 }
