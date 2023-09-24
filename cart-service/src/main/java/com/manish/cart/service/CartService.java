@@ -3,6 +3,7 @@ package com.manish.cart.service;
 import com.manish.cart.entity.CartEntity;
 import com.manish.cart.entity.Product;
 import com.manish.cart.exception.ApplicationException;
+import com.manish.cart.proxy.ProductProxy;
 import com.manish.cart.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
+    private final ProductProxy productProxy;
 
     public ResponseEntity<String> deleteAll(){
         log.info("|| called deleteAll from  CartService ||");
@@ -72,7 +74,7 @@ public class CartService {
                 cartExist.get().getProductList().add(new Product(productId, 1));
             }
 
-            // TODO: update the totalPrice
+            cartExist.get().setTotalPrice(getTotalPrice(cartExist.get().getProductList()));
             cartRepository.save(cartExist.get());
             return new ResponseEntity<>("Product Added To Cart", HttpStatus.OK);
         }catch (Exception e){
@@ -104,7 +106,7 @@ public class CartService {
                 throw new ApplicationException("product dose not exist");
             }
 
-            // TODO: update the totalPrice
+            cartExist.get().setTotalPrice(getTotalPrice(cartExist.get().getProductList()));
             cartRepository.save(cartExist.get());
             return new ResponseEntity<>("Product Removed From Cart", HttpStatus.OK);
         }catch (Exception e){
@@ -146,5 +148,16 @@ public class CartService {
         }catch (Exception e){
             throw new ApplicationException(e.getMessage());
         }
+    }
+
+    public Double getTotalPrice(List<Product> productList){
+
+        double totalPrice = 0;
+
+        for(Product product : productList){
+            totalPrice += productProxy.getProductPriceByProductId(product.getProductId()) * product.getQuantity();
+        }
+
+        return totalPrice;
     }
 }

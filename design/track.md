@@ -29,4 +29,4 @@
 2. run createCart when registerUser runs
 3. run deleteCartByCartId when deleteUserByUserId runs
 4. run deleteAll cart when deleteAll user runs
-5. 
+5. added price calculation

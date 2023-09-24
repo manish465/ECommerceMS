@@ -41,6 +41,12 @@ public class ProductController {
         return productService.getProductsByVendorId(vendorId);
     }
 
+    @GetMapping("/price/")
+    public Double getProductPriceByProductId(@RequestParam String productId){
+        log.info("|| called getProductPriceByProductId from  ProductController using {} ||", productId);
+        return productService.getProductPriceByProductId(productId);
+    }
+
     @PutMapping("/product/")
     public ResponseEntity<String> updateProductByProductId(@RequestParam String productId,
                                                            @RequestBody AddProductDTO addProductDTO){

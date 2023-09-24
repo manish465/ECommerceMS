@@ -104,6 +104,15 @@ public class ProductService {
         }
     }
 
+    public Double getProductPriceByProductId(String productId){
+        log.info("|| called getProductPriceByProductId from  ProductService using {} ||", productId);
+
+        Optional<ProductEntity> productExist = productRepository.findById(productId);
+        if(productExist.isEmpty()) throw new ApplicationException("Product dose not exist");
+
+        return productExist.get().getPrice();
+    }
+
     public ResponseEntity<String> deleteProductsByVendorId(String vendorId){
         log.info("|| called deleteProductsByVendorId from  ProductService using {} ||", vendorId);
 
