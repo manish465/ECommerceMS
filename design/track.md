@@ -23,3 +23,6 @@
 5. added zipkin monitoring to the project
 6. added product service
 7. added deleteAll endpoint in user service
+## 23 Sept 2023
+### work done
+1. added cart-service to the project 
