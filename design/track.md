@@ -34,3 +34,9 @@
 1. added login endpoint to user service
 2. added gateway service to project
 3. added security to user service
+4. added authorization in user service
+### issue found
+1. add method security in user service
+2. add security in all other service
+3. add public route in RouteValidator in gateway service
+4. add method to handle unauthorized requests

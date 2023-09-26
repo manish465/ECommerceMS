@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,14 +28,17 @@ public class AuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, @NotNull FilterChain filterChain)
             throws ServletException, IOException {
         log.info("|| doFilterInternal is called from AuthFilter class ||");
+        log.info("|| got data {} and {} in doFilterInternal ||",
+                request.getHeader("x-forward-username"),
+                request.getHeader("x-forward-role"));
 
-        String email = "ms2@gmail.com";
-        String rolesString = "NORMAL";
+        String username = request.getHeader("x-forward-username");
+        String rolesString = request.getHeader("x-forward-role");
         Collection<GrantedAuthority> authorities = Convertor.extractAuthoritiesFromString(rolesString);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(email, null,
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
                 authorities);
-        log.info("|| using email : {} and role : {} ||", email, authorities);
+        log.info("|| using username : {} and role : {} ||", username, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
