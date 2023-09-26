@@ -30,3 +30,7 @@
 3. run deleteCartByCartId when deleteUserByUserId runs
 4. run deleteAll cart when deleteAll user runs
 5. added price calculation to cart service
+## 26 Sept 2023
+1. added login endpoint to user service
+2. added gateway service to project
+3. added security to user service

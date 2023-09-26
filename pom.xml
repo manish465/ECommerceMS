@@ -11,10 +11,10 @@
     <modules>
         <module>user-service</module>
         <module>discovery-service</module>
-        <module>discovery-service</module>
         <module>auth-service</module>
         <module>product-service</module>
         <module>cart-service</module>
+        <module>gateway-service</module>
     </modules>
 
     <parent>
