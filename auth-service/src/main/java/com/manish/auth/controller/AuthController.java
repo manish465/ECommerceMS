@@ -14,18 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @Slf4j
 public class AuthController {
-    @GetMapping("/create")
+    @GetMapping("/create/")
     public String generateToken(@RequestParam String username, @RequestParam String roles){
         log.info("|| called generateToken from AuthController ||");
 
         return JwtService.generateToken(username, roles);
     }
 
-    @GetMapping("/validate")
+    @GetMapping("/validate/")
     public ClaimsDataDTO validateToken(@RequestParam String token){
         log.info("|| called validateToken from AuthController ||");
 
-        if(!JwtService.validateToken(token)) throw new ApplicationException("Invalid access");
+        if(!JwtService.validateToken(token))
+            throw new ApplicationException("Invalid access");
 
         log.info("|| token is valid ||");
 
