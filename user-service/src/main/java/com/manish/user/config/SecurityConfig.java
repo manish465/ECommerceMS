@@ -25,9 +25,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new AuthFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/user/register", "/user/login", "/user/delete/all").permitAll()
+                        .requestMatchers("/user/register", "/user/login", "/user/delete/all", "/user/all").permitAll()
                         .anyRequest().authenticated()
                 )
+
                 .build();
     }
 

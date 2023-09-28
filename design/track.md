@@ -31,6 +31,7 @@
 4. run deleteAll cart when deleteAll user runs
 5. added price calculation to cart service
 ## 26 Sept 2023
+### work done
 1. added login endpoint to user service
 2. added gateway service to project
 3. added security to user service
@@ -40,3 +41,8 @@
 2. add security in all other service
 3. add public route in RouteValidator in gateway service
 4. add method to handle unauthorized requests
+## 28 Sept 2023
+### work done
+1. fixed invalid response in validate and auth service
+2. fixed load balancing problem in gateway service
+3. fixed [26 Sept 2023 | issue | 1]

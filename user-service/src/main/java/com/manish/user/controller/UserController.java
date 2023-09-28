@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("hasAnyAuthority('NORMAL', 'SELLER', 'ADMIN')")
     public ResponseEntity<UserEntity> getUserByUserId(@RequestParam String userId){
         log.info("|| called getUserByUserId from  UserController using {}||", userId);
         return userService.getUserByUserId(userId);
@@ -38,6 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/")
+    @PreAuthorize("hasAnyAuthority('NORMAL', 'SELLER', 'ADMIN')")
     public ResponseEntity<String> updateUser(@RequestParam String userId,
                                              @RequestBody @NotNull UserRegistrationDTO userRegistrationDTO){
         log.info("|| called updateUser from  UserController using {} and {}||",
@@ -46,6 +49,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteUserByUserId(@RequestParam String userId){
         log.info("|| called deleteUserByUserId from  UserController using {}||", userId);
         return userService.deleteUserByUserId(userId);

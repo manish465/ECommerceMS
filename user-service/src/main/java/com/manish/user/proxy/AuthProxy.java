@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "auth-service/auth")
 public interface AuthProxy {
-    @GetMapping("/create")
+    @GetMapping("/create/")
     String generateToken(@RequestParam String username, @RequestParam String roles);
 }

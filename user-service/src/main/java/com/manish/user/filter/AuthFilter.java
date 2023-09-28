@@ -1,5 +1,6 @@
 package com.manish.user.filter;
 
+import com.manish.user.exception.ApplicationException;
 import com.manish.user.utils.Convertor;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,27 +26,33 @@ public class AuthFilter extends OncePerRequestFilter {
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, @NotNull FilterChain filterChain)
+    protected void doFilterInternal(@NotNull HttpServletRequest request,
+                                    @NotNull HttpServletResponse response,
+                                    @NotNull FilterChain filterChain)
             throws ServletException, IOException {
-        log.info("|| doFilterInternal is called from AuthFilter class ||");
-        log.info("|| got data {} and {} in doFilterInternal ||",
-                request.getHeader("x-forward-username"),
-                request.getHeader("x-forward-role"));
+        try {
+            log.info("|| doFilterInternal is called from AuthFilter class ||");
+            log.info("|| got data {} and {} in doFilterInternal ||",
+                    request.getHeader("x-forward-username"),
+                    request.getHeader("x-forward-role"));
 
-        String username = request.getHeader("x-forward-username");
-        String rolesString = request.getHeader("x-forward-role");
-        Collection<GrantedAuthority> authorities = Convertor.extractAuthoritiesFromString(rolesString);
+            String username = request.getHeader("x-forward-username");
+            String rolesString = request.getHeader("x-forward-role");
+            Collection<GrantedAuthority> authorities = Convertor.extractAuthoritiesFromString(rolesString);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
-                authorities);
-        log.info("|| using username : {} and role : {} ||", username, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
+                    authorities);
+            log.info("|| using username : {} and role : {} ||", username, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }catch (Exception e){
+            throw new ApplicationException(e.getMessage());
+        }
 
         filterChain.doFilter(request, response);
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request){
+    protected boolean shouldNotFilter(@NotNull HttpServletRequest request){
         return skipUrls.stream().anyMatch(path -> pathMatcher.match(path, request.getRequestURI()));
     }
 }
